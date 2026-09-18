@@ -12,6 +12,7 @@ format:
   revealjs:
     slide-number: true
     theme: [default, genovalia.scss]
+    highlight-style: github
     width: 1600
     height: 900
     margin: 0.04

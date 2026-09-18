@@ -35,9 +35,6 @@ $presentation-line-height: 1.4;
 $font-family-sans-serif: "Source Sans 3", sans-serif;
 $font-family-monospace: "IBM Plex Mono", ui-monospace, monospace;
 
-$code-block-bg: $mauve;
-$code-color: $mint;
-
 /*-- scss:rules --*/
 
 .reveal { font-family: "Source Sans 3", sans-serif; }
@@ -209,11 +206,18 @@ $assets: "../../../../../assets";
 }
 .reveal table tbody tr:nth-child(even) { background: rgba(148, 120, 248, 0.06); }
 
-// Code — inline `code` sits on the light body background, so it needs a
-// dark, readable color; only code inside <pre> blocks sits on the dark
-// $code-block-bg and keeps the light $code-color (mint).
+// Code — fenced blocks (```python, …) use pandoc's "github" highlight-style
+// (light background, dark syntax colors tuned for it), so the block itself
+// gets a light card background instead of the dark $code-block-bg. Inline
+// `code` isn't touched by highlight-style, so it still needs its own color
+// to stay readable on the light body background.
 .reveal code { color: $mauve-mid; background: rgba(148, 120, 248, 0.12); padding: 0.1em 0.35em; border-radius: 4px; }
-.reveal pre code { color: $mint; background: transparent; padding: 0; border-radius: 8px; }
+.reveal pre { background-color: #fff; border: 1px solid rgba(23, 0, 60, 0.08); }
+.reveal pre code, .reveal pre.sourceCode code {
+  background: transparent;
+  padding: 0;
+  border-radius: 8px;
+}
 
 // Blockquotes
 .reveal blockquote {
