@@ -29,6 +29,18 @@ Depuis 2010, le nombre de paramètres des modèles d'IA les plus notables double
 Source : ourworldindata.org/grapher/exponential-growth-of-parameters-in-notable-ai-systems (données Epoch AI, licence CC BY)
 :::
 
+## Pourquoi la pente change en 2010 ? {.smaller}
+
+Avant 2010, le calcul d'entraînement doublait ~tous les 2 ans (rythme proche de la loi de Moore). Depuis 2010 : ~tous les 6 mois — le début de l'**ère du deep learning**.
+
+- **GPU pour l'entraînement de réseaux de neurones** (dès 2009-2010) : rend soudainement abordable l'entraînement de modèles beaucoup plus grands
+- **Le deep learning commence à battre les méthodes classiques** sur des tâches concrètes (parole ~2009-2011, vision avec ImageNet/AlexNet en 2012) → afflux d'investissement
+- **Disponibilité de gros jeux de données** (ImageNet publié en 2009) pour nourrir des modèles plus grands
+
+::: {.callout-note}
+Epoch AI/Our World in Data situent cette date comme la frontière entre l'ère "pré-deep learning" et l'ère du deep learning dans leur base de données.
+:::
+
 ## Une course qui ralentit sur un front, accélère sur un autre {.smaller}
 
 - Les comptes de paramètres publiés stagnent depuis ~3 ans autour de 1000 milliards — **les labos ont cessé de les divulguer** (OpenAI, Anthropic, Google)

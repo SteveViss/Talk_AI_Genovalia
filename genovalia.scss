@@ -209,8 +209,11 @@ $assets: "../../../../../assets";
 }
 .reveal table tbody tr:nth-child(even) { background: rgba(148, 120, 248, 0.06); }
 
-// Code
-.reveal pre code { border-radius: 8px; }
+// Code — inline `code` sits on the light body background, so it needs a
+// dark, readable color; only code inside <pre> blocks sits on the dark
+// $code-block-bg and keeps the light $code-color (mint).
+.reveal code { color: $mauve-mid; background: rgba(148, 120, 248, 0.12); padding: 0.1em 0.35em; border-radius: 4px; }
+.reveal pre code { color: $mint; background: transparent; padding: 0; border-radius: 8px; }
 
 // Blockquotes
 .reveal blockquote {
