@@ -17,9 +17,9 @@ format:
     margin: 0.04
 ---
 
-# Contexte : la course à l'échelle {background-color="#17003C"}
+# Contexte : la course à l'overfitting {background-color="#17003C"}
 
-## La croissance des hyperparamètres {.smaller}
+## La croissance du nombre d'hyperparamètres {.smaller}
 
 Depuis 2010, le nombre de paramètres des modèles d'IA les plus notables double environ chaque année.
 
@@ -38,6 +38,7 @@ Source : ourworldindata.org/grapher/exponential-growth-of-parameters-in-notable-
 
 ## Les principaux fournisseurs {.smaller}
 
+::: {style="font-size: 0.65em"}
 | Fournisseur | Modèles phares | Approche |
 |---|---|---|
 | **Anthropic** | Claude (Opus, Sonnet, Haiku) | Propriétaire, focus sécurité/alignement |
@@ -47,6 +48,7 @@ Source : ourworldindata.org/grapher/exponential-growth-of-parameters-in-notable-
 | **xAI** | Grok | Propriétaire |
 | **Mistral AI** | Mistral, Magistral | Mixte (ouvert + propriétaire), européen |
 | **DeepSeek** | DeepSeek-V/R | Poids ouverts, entraînement très optimisé en coût |
+:::
 
 ::: {.callout-note}
 Paysage qui évolue vite — écarts de performance entre labos de tête de plus en plus faibles d'une génération à l'autre.
@@ -60,6 +62,14 @@ Paysage qui évolue vite — écarts de performance entre labos de tête de plus
 - Un modèle ne lit pas des mots ou des caractères, mais une **séquence de tokens**
 - Tout compte comme tokens : prompt système, historique, résultats d'outils, images, réponse générée
 
+**Exemple** (tokeniseur BPE, `cl100k_base`) :
+
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.55em; line-height: 2.4; margin: 0.6em 0;">
+<span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">La</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;biod</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">ivers</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">ité</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;du</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;Québec</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;se</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;mesure</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;aussi</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;par</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;ses</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;sé</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">quences</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;gén</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">om</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">iques</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">.</span>
+</div>
+
+17 tokens pour 71 caractères / 11 mots — noter les mots découpés en morceaux (`biod|ivers|ité`, `sé|quences`, `gén|om|iques`)
+
 ::: {.callout-note}
 1 token ≈ 0,75 mot (anglais). Le français tokenise généralement un peu moins efficacement.
 :::
@@ -68,7 +78,7 @@ Paysage qui évolue vite — écarts de performance entre labos de tête de plus
 
 La "context window" = tout ce que le modèle peut voir en même temps (mémoire de travail, pas la mémoire d'entraînement).
 
-![Diagramme officiel Anthropic : accumulation des tours dans la fenêtre de contexte](https://platform.claude.com/docs/images/context-window.svg){fig-align="center" width="70%"}
+![Diagramme officiel Anthropic : accumulation des tours dans la fenêtre de contexte](assets/images/context-window.svg){fig-align="center" width="70%"}
 
 ::: {.notes}
 Source : platform.claude.com/docs/en/build-with-claude/context-windows
