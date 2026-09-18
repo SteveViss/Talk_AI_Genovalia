@@ -218,12 +218,12 @@ Steve Vissault
 
 </section>
 <section>
-<section id="contexte-la-course-à-léchelle" class="title-slide slide level1 center" data-background-color="#17003C">
-<h1>Contexte : la course à l’échelle</h1>
+<section id="contexte-la-course-à-loverfitting" class="title-slide slide level1 center" data-background-color="#17003C">
+<h1>Contexte : la course à l’overfitting</h1>
 
 </section>
-<section id="la-croissance-des-hyperparamètres" class="slide level2 smaller">
-<h2>La croissance des hyperparamètres</h2>
+<section id="la-croissance-du-nombre-dhyperparamètres" class="slide level2 smaller">
+<h2>La croissance du nombre d’hyperparamètres</h2>
 <p>Depuis 2010, le nombre de paramètres des modèles d’IA les plus notables double environ chaque année.</p>
 
 <img data-src="https://ourworldindata.org/grapher/exponential-growth-of-parameters-in-notable-ai-systems.svg" style="width:65.0%" class="r-stretch quarto-figure-center"><p class="caption">Croissance exponentielle des paramètres dans les systèmes d’IA notables — Our World in Data / Epoch AI</p><aside class="notes">
@@ -251,6 +251,7 @@ Steve Vissault
 </section>
 <section id="les-principaux-fournisseurs" class="slide level2 smaller">
 <h2>Les principaux fournisseurs</h2>
+<div style="font-size: 0.65em">
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -302,6 +303,7 @@ Steve Vissault
 </tr>
 </tbody>
 </table>
+</div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -328,6 +330,11 @@ Steve Vissault
 <li>Un modèle ne lit pas des mots ou des caractères, mais une <strong>séquence de tokens</strong></li>
 <li>Tout compte comme tokens : prompt système, historique, résultats d’outils, images, réponse générée</li>
 </ul>
+<p><strong>Exemple</strong> (tokeniseur BPE, <code>cl100k_base</code>) :</p>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.55em; line-height: 2.4; margin: 0.6em 0;">
+<p><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">La</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;biod</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">ivers</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">ité</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;du</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;Québec</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;se</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;mesure</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;aussi</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;par</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;ses</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;sé</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">quences</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">&nbsp;gén</span><span style="background:#FF6645; color:#17003C; padding:2px 3px; border-radius:3px;">om</span><span style="background:#9478F8; color:#17003C; padding:2px 3px; border-radius:3px;">iques</span><span style="background:#BCB9F2; color:#17003C; padding:2px 3px; border-radius:3px;">.</span></p>
+</div>
+<p>17 tokens pour 71 caractères / 11 mots — noter les mots découpés en morceaux (<code>biod|ivers|ité</code>, <code>sé|quences</code>, <code>gén|om|iques</code>)</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -346,7 +353,7 @@ Steve Vissault
 <h2>La fenêtre de contexte</h2>
 <p>La “context window” = tout ce que le modèle peut voir en même temps (mémoire de travail, pas la mémoire d’entraînement).</p>
 
-<img data-src="https://platform.claude.com/docs/images/context-window.svg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Diagramme officiel Anthropic : accumulation des tours dans la fenêtre de contexte</p><aside class="notes">
+<img data-src="assets/images/context-window.svg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Diagramme officiel Anthropic : accumulation des tours dans la fenêtre de contexte</p><aside class="notes">
 <p>Source : platform.claude.com/docs/en/build-with-claude/context-windows</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
