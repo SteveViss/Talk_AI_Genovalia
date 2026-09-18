@@ -1,0 +1,130 @@
+---
+title: "Introduction à l'IA générative"
+subtitle: "Tokens, skills, artifacts et programmation agentic"
+author:
+  - name: "Steve Vissault"
+    affiliations:
+      - "INRS"
+      - "Genovalia / Université Laval"
+resources:
+  - assets/
+format:
+  revealjs:
+    slide-number: true
+    theme: [default, genovalia.scss]
+    width: 1600
+    height: 900
+    margin: 0.04
+---
+
+# Tokens & contexte {background-color="#17003C"}
+
+## C'est quoi un token ? {.smaller}
+
+- Unité de découpage du texte (sous-mot, ~4 caractères en moyenne en anglais)
+- Un modèle ne lit pas des mots ou des caractères, mais une **séquence de tokens**
+- Tout compte comme tokens : prompt système, historique, résultats d'outils, images, réponse générée
+
+::: {.callout-note}
+1 token ≈ 0,75 mot (anglais). Le français tokenise généralement un peu moins efficacement.
+:::
+
+## La fenêtre de contexte {.smaller}
+
+La "context window" = tout ce que le modèle peut voir en même temps (mémoire de travail, pas la mémoire d'entraînement).
+
+![Diagramme officiel Anthropic : accumulation des tours dans la fenêtre de contexte](https://platform.claude.com/docs/images/context-window.svg){fig-align="center" width="70%"}
+
+::: {.notes}
+Source : platform.claude.com/docs/en/build-with-claude/context-windows
+:::
+
+## Taille de contexte par modèle {.smaller}
+
+- Modèles récents (Sonnet 5, Opus 5, Fable 5.1, …) : **1 million de tokens**
+- Modèles antérieurs (Sonnet 4.5, Haiku 4.5) : **200 000 tokens**
+- Plus de contexte ≠ toujours mieux : au-delà d'un certain seuil, la précision se dégrade (*context rot*) → curer ce qu'on met dans le contexte compte autant que sa taille
+
+## Le coût des modèles {.smaller}
+
+Facturation au token, prix différents pour l'entrée (input) et la sortie (output) — l'output coûte typiquement 5× l'input.
+
+| Modèle | Input ($/M tokens) | Output ($/M tokens) |
+|---|---|---|
+| Haiku 4.5 | 1 | 5 |
+| Sonnet 5 | 2 | 10 |
+| Opus 5 | 5 | 25 |
+| Fable 5 / 5.1 | 10 | 50 |
+
+::: {.callout-note}
+Le cache de prompt réduit le coût d'un contexte répété jusqu'à 90 % (hit = 10 % du prix input standard).
+:::
+
+# Skills {background-color="#17003C"}
+
+## C'est quoi un skill ? {.smaller}
+
+- Un dossier structuré d'instructions (+ scripts, ressources) que l'agent peut découvrir et charger au besoin
+- Permet d'**empaqueter et partager un savoir-faire** (un prompt, une procédure, un style) plutôt que de le retaper à chaque fois
+- Chaque skill = un fichier `SKILL.md` (nom, description, instructions), avec fichiers optionnels dans `/scripts`, `/references`, `/assets`
+
+## Pourquoi c'est utile en équipe {.smaller}
+
+- Standardise une procédure récurrente (ex. : template de rapport, checklist de revue de code, style de commit)
+- Se partage comme du code : un dossier versionné dans un dépôt ou un plugin
+- **Progressive disclosure** : l'agent ne voit d'abord qu'une courte description ; il charge le détail seulement s'il en a besoin → économise des tokens de contexte
+
+::: {.callout-note}
+Référence : platform.claude.com/docs/en/agents-and-tools/agent-skills/overview — dépôt d'exemples : github.com/anthropics/skills
+:::
+
+# Artifacts {background-color="#17003C"}
+
+## C'est quoi un artifact ? {.smaller}
+
+- Un contenu généré par l'agent (code, document, page web, visualisation) affiché à part de la conversation, dans son propre espace
+- Vit dans son propre "espace de travail" : on peut le rouvrir, le mettre à jour, le partager par lien
+- Contrairement à un bloc de code dans le chat, il est **persistant et interactif** (ex. : une page HTML qui tourne réellement, un tableau qu'on peut re-render)
+
+## Cas d'usage typiques {.smaller}
+
+- Prototype d'interface ou de visualisation à itérer sans réécrire toute la conversation
+- Document destiné à être partagé/édité par d'autres personnes
+- Rapport, dashboard ou diagramme qui doit rester consultable après la session
+
+# Programmation agentic {background-color="#17003C"}
+
+## Le bloc de base : le LLM augmenté {.smaller}
+
+Un modèle seul répond ; un modèle **augmenté** peut chercher de l'information, appeler des outils et garder de la mémoire.
+
+![Diagramme officiel Anthropic : le LLM augmenté](https://www-cdn.anthropic.com/images/4zrzovbb/website/d3083d3f40bb2b6f477901cc9a240738d3dd1371-2401x1000.png){fig-align="center" width="65%"}
+
+## La boucle agentique {.smaller}
+
+Un agent = un LLM qui utilise des outils **en boucle**, en se basant sur le retour de l'environnement à chaque étape (résultat d'outil, sortie de code) pour ajuster la suite.
+
+![Diagramme officiel Anthropic : boucle d'un agent autonome](https://www-cdn.anthropic.com/images/4zrzovbb/website/58d9f10c985c4eb5d53798dea315f7bb5ab6249e-2401x1000.png){fig-align="center" width="60%"}
+
+::: {.notes}
+Source : anthropic.com/engineering/building-effective-agents
+:::
+
+## Exemple concret : un agent de code {.smaller}
+
+![Diagramme officiel Anthropic : flux d'un agent de codage (ex. Claude Code)](https://www-cdn.anthropic.com/images/4zrzovbb/website/4b9a1f4eb63d5962a6e1746ac26bbc857cf3474f-2400x1666.png){fig-align="center" width="45%"}
+
+- Lit le code existant, planifie, édite des fichiers, exécute des tests
+- Ground truth à chaque étape (résultat de test, sortie de commande) plutôt qu'un seul gros prompt
+
+## Workflows vs agents {.smaller}
+
+- **Workflow** : chemin prédéfini, le code orchestre le LLM et les outils (prévisible, plus simple à déboguer)
+- **Agent** : le LLM décide lui-même de la suite des actions (flexible, adapté aux tâches ouvertes/imprévisibles)
+- Recommandation Anthropic : commencer simple (un seul appel, un workflow), n'ajouter une boucle agentique que si la tâche l'exige vraiment
+
+# Merci {background-color="#17003C"}
+
+## Questions {.smaller}
+
+Steve Vissault — INRS / Genovalia

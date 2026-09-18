@@ -1,0 +1,220 @@
+/*-- scss:defaults --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+// Genovalia palette
+$mauve:        #17003C;
+$mauve-mid:    #563C9A;
+$violet:       #9478F8;
+$violet-tint:  #BCB9F2;
+$sanguine:     #FF6645;
+$orange:       #F64235;
+$rouge:        #E30513;
+$peach:        #FFB983;
+$mint:         #E3FAEC;
+$sand:         #FFF3C0;
+
+$body-bg: #F7F6FA;
+$body-color: #3B2A5C;
+$link-color: $mauve-mid;
+$link-color-hover: $sanguine;
+$selection-bg: $violet-tint;
+
+$presentation-heading-font: "Overpass", sans-serif;
+$presentation-heading-color: $mauve;
+$presentation-heading-font-weight: 700;
+$presentation-heading-line-height: 1.05;
+$presentation-heading-letter-spacing: -0.01em;
+$presentation-heading-text-transform: none;
+$presentation-heading-text-shadow: none;
+// Scaled with the taller 900px canvas (34 * 900/700) so text keeps the same
+// relative size it had on the old 1050x700 deck.
+$presentation-font-size-root: 44px;
+$presentation-line-height: 1.4;
+
+$font-family-sans-serif: "Source Sans 3", sans-serif;
+$font-family-monospace: "IBM Plex Mono", ui-monospace, monospace;
+
+$code-block-bg: $mauve;
+$code-color: $mint;
+
+/*-- scss:rules --*/
+
+.reveal { font-family: "Source Sans 3", sans-serif; }
+
+// The deck margin is only 0.04, so content slides get their breathing room
+// here instead (padding never sets a height, so it can't offset later slides).
+.reveal .slides > section:not(#title-slide),
+.reveal .slides > section:not(#title-slide) > section {
+  box-sizing: border-box;
+  padding: 3% 4%;
+}
+
+.reveal h1, .reveal h2, .reveal h3 { font-family: "Overpass", sans-serif; }
+
+.reveal h1 { font-weight: 800; }
+.reveal h2 { font-weight: 700; border-bottom: 3px solid $sanguine; padding-bottom: 0.2em; display: inline-block; }
+.reveal h3 { font-weight: 600; color: $mauve-mid; }
+
+// This theme is compiled to index_files/libs/revealjs/dist/theme/quarto-*.css,
+// so url()s here resolve against THAT folder, not the document. $assets walks
+// back up to the project root; plain "assets/…" paths silently 404.
+$assets: "../../../../../assets";
+
+// Title slide cover — painted on reveal's own background layer, which spans
+// the WHOLE viewport. The <section> can't do this: reveal's `margin: 0.1`
+// insets it, so a background there leaves a pale gutter on all four sides.
+// That background div inherits the slide's classes, hence .quarto-title-block.
+// Flat mauve on the div itself; photo as a pseudo-element pinned to the right
+// half so background-size: cover crops it instead of stretching it (the
+// photo is 3:2, the half-slide box is ~3:4).
+.reveal .backgrounds .slide-background.quarto-title-block {
+  background: $mauve;
+}
+.reveal .backgrounds .slide-background.quarto-title-block::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 50%;
+  background-image: url("#{$assets}/images/cover.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+
+// Two traps here:
+// 1. box-sizing — the section is content-box, so a % padding-right widens the
+//    section past the slide instead of narrowing the text column, and the h1
+//    keeps full width and runs under the photo.
+// 2. NEVER give this section height: 100%. Slides are absolutely positioned
+//    with top:auto, so their static position stacks after previous displayed
+//    siblings — a 700px-tall title slide offsets every later slide by 700px
+//    and pushes the whole deck off-screen.
+// (No flex centering either: reveal writes display:block inline to show a
+// slide, so it loses; !important would pin this slide over all the others.)
+.reveal .slides > section#title-slide {
+  box-sizing: border-box;
+  color: #fff;
+  text-align: left;
+  padding: 7% 52% 0 1%;
+}
+
+// Logos live INSIDE the slide's coordinate system (not on the full-viewport
+// background layer) so they share the text's left edge at any window size:
+// left: 1% matches the section's padding-left. Reveal already positions the
+// section absolutely, so this anchors to it; top is a fixed logical offset
+// because the section's own height is content-driven.
+.reveal .slides > section#title-slide::after {
+  content: "";
+  position: absolute;
+  left: 1%; top: 700px;
+  width: 40%; height: 130px;
+  background-image:
+    url("#{$assets}/logos/INRS-logo-web-blanc-horizontal.png"),
+    url("#{$assets}/logos/Genovalia_Logo_Blanc.png");
+  background-repeat: no-repeat;
+  // INRS is 600x365, so at 130px tall it runs ~213px wide; Genovalia starts
+  // just past that for a ~24px gap.
+  background-position: left bottom, left 237px bottom;
+  background-size: auto 100%, auto 66%;
+}
+
+.reveal .slides > section#title-slide h1.title {
+  color: #fff;
+  font-size: 1.3em;
+  border-bottom: none;
+  margin-bottom: 0.6em;
+}
+.reveal .slides > section#title-slide .quarto-title-author-name {
+  color: $violet-tint;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.5em;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+.reveal .slides > section#title-slide .quarto-title-author:first-child
+  .quarto-title-author-name {
+  color: $peach;
+  font-weight: 600;
+  font-size: 0.62em;
+}
+.reveal .slides > section#title-slide .quarto-title-affiliation {
+  color: $violet-tint;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.42em;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.85;
+}
+// Space between the presenter block and the collaborators line.
+.reveal .slides > section#title-slide .quarto-title-author + .quarto-title-author {
+  margin-top: 0.7em;
+}
+// Quarto lays authors out side by side; stack them instead.
+.reveal .slides > section#title-slide .quarto-title-authors {
+  display: block;
+  text-align: left;
+}
+
+
+// Section divider slides (h1 = "# Section") get their own full-bleed
+// background via reveal.js's real background layer, not a CSS `background`
+// on the section (see note on the title slide above).
+.reveal .slides > section.center h1 {
+  color: #fff;
+}
+
+// Links
+.reveal a { text-decoration: underline; text-underline-offset: 2px; }
+
+// Lists
+.reveal ul, .reveal ol { color: $body-color; }
+.reveal strong { color: $mauve; }
+
+// Callout — brand colors throughout; Quarto ships a blue header + blue icon
+// that clashed with the sanguine body tint.
+.reveal div.callout.callout-note {
+  border-left: 4px solid $sanguine;
+  border-radius: 0 6px 6px 0;
+}
+// .callout-style-default is needed to outrank Quarto's own blue header rule.
+.reveal div.callout.callout-note.callout-style-default .callout-title {
+  background: rgba(255, 102, 69, 0.14);
+  color: $mauve;
+}
+.reveal div.callout.callout-note .callout-body {
+  background: rgba(255, 102, 69, 0.06);
+  color: $mauve-mid;
+  font-style: italic;
+}
+.reveal div.callout.callout-note .callout-icon-container {
+  display: none;
+}
+
+// Footer / slide number
+.reveal .slide-number,
+.reveal .footer {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.4em;
+  color: $mauve-mid;
+  letter-spacing: 0.04em;
+}
+
+// Tables
+.reveal table thead th {
+  background: $mint;
+  color: $mauve;
+  font-family: "Overpass", sans-serif;
+  font-weight: 600;
+}
+.reveal table tbody tr:nth-child(even) { background: rgba(148, 120, 248, 0.06); }
+
+// Code
+.reveal pre code { border-radius: 8px; }
+
+// Blockquotes
+.reveal blockquote {
+  border-left: 4px solid $violet;
+  color: $mauve-mid;
+  font-style: italic;
+}
